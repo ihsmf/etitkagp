@@ -628,20 +628,6 @@
         @media(max-width: 1024px) {
             header { justify-content: space-between; padding: 20px 5%; }
             .logo { position: relative; left: 0; }
-            .hero-text-container {
-                top: auto;
-                bottom: 12%;
-                left: 0;
-                right: 0;
-                padding: 0 5%;
-                max-width: 100%;
-                transform: none;
-            }
-            .hero-title {
-                font-size: clamp(2.6rem, 11vw, 4rem);
-                letter-spacing: -1px;
-                line-height: 1.0;
-            }
             .bento-grid { grid-template-columns: 1fr; gap: 16px; }
             .bento-card-outer.wide { grid-column: span 1; }
             .contact-container { grid-template-columns: 1fr; gap: 60px; }
@@ -669,6 +655,23 @@
 
             /* Hide desktop nav */
             .nav-wrapper { display: none !important; }
+
+            /* ── HERO TEXT — mobile fix ── */
+            .hero-text-container {
+                left: 0 !important;
+                right: 0 !important;
+                top: auto !important;
+                bottom: 10% !important;
+                padding: 0 5% !important;
+                max-width: 100% !important;
+                transform: none !important;
+            }
+            .hero-title {
+                font-size: clamp(2.2rem, 9.5vw, 3.5rem) !important;
+                letter-spacing: 0px !important;
+                line-height: 1.05 !important;
+                word-break: break-word !important;
+            }
 
             /* Burger button */
             .burger {
