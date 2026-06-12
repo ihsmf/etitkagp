@@ -628,7 +628,20 @@
         @media(max-width: 1024px) {
             header { justify-content: space-between; padding: 20px 5%; }
             .logo { position: relative; left: 0; }
-            .hero-text-container { top: 60%; }
+            .hero-text-container {
+                top: auto;
+                bottom: 12%;
+                left: 0;
+                right: 0;
+                padding: 0 5%;
+                max-width: 100%;
+                transform: none;
+            }
+            .hero-title {
+                font-size: clamp(2.6rem, 11vw, 4rem);
+                letter-spacing: -1px;
+                line-height: 1.0;
+            }
             .bento-grid { grid-template-columns: 1fr; gap: 16px; }
             .bento-card-outer.wide { grid-column: span 1; }
             .contact-container { grid-template-columns: 1fr; gap: 60px; }
