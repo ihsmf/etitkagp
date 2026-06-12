@@ -645,8 +645,14 @@
             header {
                 padding: 20px 5%;
                 justify-content: space-between;
+                align-items: center;
             }
-            .logo { position: relative; left: 0; }
+            /* Override absolute positioning for mobile */
+            .logo {
+                position: relative !important;
+                left: auto !important;
+                pointer-events: auto;
+            }
 
             /* Hide desktop nav */
             .nav-wrapper { display: none !important; }
@@ -751,8 +757,17 @@
             .mobile-nav-meta span { color: var(--accent); }
         }
         @media(min-width: 769px) {
-            .burger { display: none; }
-            .mobile-nav { display: none; }
+            .burger { display: none !important; }
+            .mobile-nav { display: none !important; }
+        }
+        /* Ensure mobile-nav is invisible by default on mobile too */
+        .mobile-nav {
+            pointer-events: none;
+            visibility: hidden;
+        }
+        .mobile-nav.open {
+            pointer-events: auto;
+            visibility: visible;
         }
     </style>
 </head>
@@ -1580,12 +1595,12 @@
             function openMenu() {
                 burger.classList.add('open');
                 mobileNav.classList.add('open');
-                document.body.style.overflow = 'hidden';
+                if (window.lenis) window.lenis.stop();
             }
             function closeMenu() {
                 burger.classList.remove('open');
                 mobileNav.classList.remove('open');
-                document.body.style.overflow = '';
+                if (window.lenis) window.lenis.start();
             }
 
             burger.addEventListener('click', () => {
