@@ -637,6 +637,123 @@
             .contact-card.full-width { grid-column: span 1; flex-direction: column; align-items: flex-start; gap: 20px; }
             .nav-sys-status { display: none; }
         }
+
+        /* ══════════════════════════════════════════
+           MOBILE NAV — burger + slide-down drawer
+           ══════════════════════════════════════════ */
+        @media(max-width: 768px) {
+            header {
+                padding: 20px 5%;
+                justify-content: space-between;
+            }
+            .logo { position: relative; left: 0; }
+
+            /* Hide desktop nav */
+            .nav-wrapper { display: none !important; }
+
+            /* Burger button */
+            .burger {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                width: 40px; height: 40px;
+                cursor: pointer;
+                pointer-events: auto;
+                z-index: 10001;
+                position: relative;
+            }
+            .burger span {
+                display: block;
+                width: 22px; height: 1.5px;
+                background: #fff;
+                border-radius: 2px;
+                transition: transform 0.35s cubic-bezier(.77,0,.18,1),
+                            opacity 0.25s ease,
+                            width 0.3s ease;
+                transform-origin: center;
+            }
+            .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+            .burger.open span:nth-child(2) { opacity: 0; width: 0; }
+            .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+            /* Drawer */
+            .mobile-nav {
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                z-index: 9999;
+                background: rgba(4,4,4,0.96);
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+                padding: 100px 8% 60px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                clip-path: inset(0 0 100% 0);
+                transition: clip-path 0.55s cubic-bezier(.77,0,.18,1);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .mobile-nav.open {
+                clip-path: inset(0 0 0% 0);
+            }
+            .mobile-nav a {
+                font-family: var(--font-mono);
+                font-size: clamp(1.6rem, 7vw, 2.2rem);
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: 3px;
+                color: rgba(255,255,255,0.25);
+                text-decoration: none;
+                padding: 18px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                transition: color 0.25s ease;
+                opacity: 0;
+                transform: translateX(-20px);
+                transition: opacity 0.4s ease, transform 0.4s ease, color 0.2s ease;
+            }
+            .mobile-nav.open a {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            .mobile-nav.open a:nth-child(1) { transition-delay: 0.12s; }
+            .mobile-nav.open a:nth-child(2) { transition-delay: 0.18s; }
+            .mobile-nav.open a:nth-child(3) { transition-delay: 0.24s; }
+            .mobile-nav.open a:nth-child(4) { transition-delay: 0.30s; }
+            .mobile-nav.open a:nth-child(5) { transition-delay: 0.36s; }
+            .mobile-nav a:hover { color: #fff; }
+            .mobile-nav a::after {
+                content: '→';
+                font-size: 1rem;
+                color: var(--accent);
+                opacity: 0;
+                transform: translateX(-8px);
+                transition: opacity 0.2s, transform 0.2s;
+            }
+            .mobile-nav a:hover::after { opacity: 1; transform: translateX(0); }
+            .mobile-nav a:last-child { border-bottom: none; }
+
+            /* bottom meta in drawer */
+            .mobile-nav-meta {
+                margin-top: 40px;
+                font-family: var(--font-mono);
+                font-size: 0.6rem;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(255,255,255,0.15);
+                opacity: 0;
+                transition: opacity 0.4s ease 0.42s;
+            }
+            .mobile-nav.open .mobile-nav-meta { opacity: 1; }
+            .mobile-nav-meta span { color: var(--accent); }
+        }
+        @media(min-width: 769px) {
+            .burger { display: none; }
+            .mobile-nav { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -690,6 +807,7 @@
     <header>
         <div class="logo" onclick="window.lenis.scrollTo('#hero')">ETIKETKA <span style="color:var(--accent)">GP</span></div>
         
+        <!-- Desktop nav -->
         <div class="nav-wrapper">
             <div class="nav-dock">
                 <div class="nav-indicator"></div>
@@ -700,7 +818,24 @@
                 <a href="#contact">Контакти</a>
             </div>
         </div>
+
+        <!-- Mobile burger -->
+        <div class="burger" id="burger" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
+
+    <!-- Mobile nav drawer -->
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="#hero"           class="mob-link">Інтро</a>
+        <a href="#projects-master" class="mob-link">Проєкти</a>
+        <a href="#brand-specs"    class="mob-link">Про нас</a>
+        <a href="#factory"        class="mob-link">Фабрика</a>
+        <a href="#contact"        class="mob-link">Контакти</a>
+        <div class="mobile-nav-meta">Etiketka <span>GP</span> Studio // 2024</div>
+    </nav>
 
     <main>
         <!-- CINEMATIC HERO VIDEO FRAME -->
@@ -1436,6 +1571,49 @@
         gsap.to(".video-container video", { scale: 1.2, scrollTrigger: { trigger: "#factory", start: "top bottom", end: "bottom top", scrub: true }});
 
         // --- NAVIGATION ---
+        // ── MOBILE BURGER ──────────────────────────────────────────
+        (function() {
+            const burger    = document.getElementById('burger');
+            const mobileNav = document.getElementById('mobileNav');
+            if (!burger || !mobileNav) return;
+
+            function openMenu() {
+                burger.classList.add('open');
+                mobileNav.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeMenu() {
+                burger.classList.remove('open');
+                mobileNav.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            burger.addEventListener('click', () => {
+                burger.classList.contains('open') ? closeMenu() : openMenu();
+            });
+
+            // close on link click + smooth scroll
+            mobileNav.querySelectorAll('.mob-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = link.getAttribute('href');
+                    closeMenu();
+                    setTimeout(() => {
+                        if (window.lenis) window.lenis.scrollTo(target);
+                        else document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
+                    }, 420);
+                });
+            });
+
+            // close on outside click
+            document.addEventListener('click', (e) => {
+                if (!mobileNav.contains(e.target) && !burger.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+        })();
+        // ───────────────────────────────────────────────────────────────
+
         document.querySelectorAll('.nav-dock a').forEach(link => {
             link.addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo(link.getAttribute('href'), { duration: 1.5 }); });
         });
